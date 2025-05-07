@@ -1,0 +1,60 @@
+# Ignore build directories
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/Makefile
+/*.cmake
+/*.cbp
+/*.user
+/*.layout
+/*.depend
+/compile_commands.json
+
+# Ignore binary files
+/GameEngineCMQ
+/MessageQueueTest
+*.exe
+*.out
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.a
+*.lib
+
+# Ignore logs
+/logs/
+/*.log
+
+# Ignore config files (if you want to keep them local)
+/config/config.json
+
+# Ignore CLion IDE specific files
+.idea/
+*.iml
+*.ipr
+
+# Ignore VSCode IDE specific files
+.vscode/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Ignore macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignore Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Ignore Linux system files
+*~
+.*.swp
+.*.swo
+
+# Ignore Git itself
+.git/
