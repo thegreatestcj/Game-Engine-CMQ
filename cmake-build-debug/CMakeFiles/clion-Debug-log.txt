@@ -1,4 +1,0 @@
-/home/saki/.cache/JetBrains/RemoteDev/dist/a7e22285efc50_CLion-251.23774.281/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/saki/.cache/JetBrains/RemoteDev/dist/a7e22285efc50_CLion-251.23774.281/bin/ninja/linux/x64/ninja -G Ninja -S /home/saki/repos/GameEngineCMQ -B /home/saki/repos/GameEngineCMQ/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/saki/repos/GameEngineCMQ/cmake-build-debug
