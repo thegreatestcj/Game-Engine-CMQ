@@ -2,6 +2,7 @@
 /build/
 /CMakeFiles/
 /CMakeCache.txt
+/cmake-build-debug/
 /Makefile
 /*.cmake
 /*.cbp
