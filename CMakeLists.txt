@@ -20,6 +20,8 @@ add_subdirectory(src/gameplay)
 add_subdirectory(src/logger)
 add_subdirectory(src/config)
 add_subdirectory(src/web)
+add_subdirectory(src/network)
+add_subdirectory(src/game)
 
 # Define the main executable
 add_executable(GameEngineCMQ main.cpp)
@@ -31,4 +33,6 @@ target_link_libraries(GameEngineCMQ
     Logger
     Config
     WebView
+    GameModule
+    Network
 )
