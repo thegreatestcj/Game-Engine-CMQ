@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(GameEngineCMQ)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Include custom CMake helpers
@@ -21,7 +21,6 @@ add_subdirectory(src/logger)
 add_subdirectory(src/config)
 add_subdirectory(src/web)
 add_subdirectory(src/network)
-add_subdirectory(src/game)
 
 # Define the main executable
 add_executable(GameEngineCMQ main.cpp)
