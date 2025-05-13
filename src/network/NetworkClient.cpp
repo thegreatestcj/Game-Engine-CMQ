@@ -9,19 +9,18 @@ namespace CMQ {
 NetworkClient::NetworkClient(const std::string &server_ip, int port, ProtocolType protocol, bool use_ssl)
     : server_ip_(server_ip), port_(port), protocol_(protocol),
       use_ssl_(use_ssl), connected_(false), running_(true),
-      heartbeat_active_(false), ssl_ctx_(nullptr), ssl_(nullptr),
-      dispatcher_(std::make_shared<Dispatcher>(2)) {
+      heartbeat_active_(false), ssl_ctx_(nullptr), ssl_(nullptr) {
 #ifdef _WIN32
     WSAStartup(MAKEWORD(2, 2), &wsa_data_);
 #endif
     if (use_ssl_) initialize_ssl();
-    dispatcher_->start();
+    Dispatcher::get_instance().start(2); // Use Singleton Dispatcher
 }
 
 NetworkClient::~NetworkClient() {
     disconnect();
     cleanup_ssl();
-    dispatcher_->stop();
+    Dispatcher::get_instance().stop(); // Singleton Dispatcher shutdown
 #ifdef _WIN32
     WSACleanup();
 #endif

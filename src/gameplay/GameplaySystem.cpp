@@ -12,13 +12,11 @@ namespace CMQ {
     }
 
     void GameplaySystem::initialize() {
-        // Register all commands using CommandFactory
-        CommandFactory::get_instance().register_all_commands();
-        command_registry_ = CommandFactory::get_instance().get_registered_commands();
+        // Automatically detect all commands from CommandFactory
+        const auto& commands = CommandFactory::get_instance().get_registered_commands();
 
         // Automatically register events for each command
-        for (const auto& [command_name, _] : command_registry_) {
-            // Register an event for each command
+        for (const auto& [command_name, _] : commands) {
             event_bus_->register_event("player_" + command_name, [this, command_name](const std::string& data) {
                 std::istringstream iss(data);
                 std::string client_id, params;
@@ -26,11 +24,10 @@ namespace CMQ {
                 std::getline(iss, params);
                 execute_command(command_name, params, client_id);
             });
-
             std::cout << "Registered event: player_" << command_name << std::endl;
         }
 
-        std::cout << "GameplaySystem initialized with " << command_registry_.size() << " commands.\n";
+        std::cout << "GameplaySystem initialized with " << commands.size() << " commands.\n";
     }
 
     void GameplaySystem::handle_event(const std::string& event_name, const std::string& data) {
@@ -43,13 +40,26 @@ namespace CMQ {
             return;
         }
 
-        auto it = command_registry_.find(command_name);
-        if (it != command_registry_.end()) {
-            auto command = it->second;
-            command->execute(nullptr, 0, params);
+        auto command = CommandFactory::get_instance().create_command(command_name);
+        if (command) {
+            command->execute(this, std::stoi(client_id), params); // Pass GameplaySystem
         } else {
             std::cerr << "Unknown command: " << command_name << std::endl;
         }
+    }
+
+    // Broadcast message to all connected players
+    void GameplaySystem::broadcast_message(const std::string& message) {
+        std::lock_guard<std::mutex> lock(player_map_mutex_);
+        for (const auto& [client_id, _] : player_map_) {
+            std::cout << "[Broadcast] " << message << std::endl;
+        }
+    }
+
+    // Send a direct message to a specific player
+    void GameplaySystem::send_message(const std::string& client_id, const std::string& message) {
+        std::lock_guard<std::mutex> lock(player_map_mutex_);
+        std::cout << "[Private] to " << client_id << ": " << message << std::endl;
     }
 
 }

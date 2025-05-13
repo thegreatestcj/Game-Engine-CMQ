@@ -6,12 +6,13 @@
 #include <string>
 
 namespace CMQ {
+    class GameplaySystem; // Forward declaration
+
     class ChatCommand : public Command {
     public:
-        void execute(GameServer* server, int client_id, const std::string& params) override;
+        void execute(GameplaySystem* system, int client_id, const std::string& params) override;
 
     private:
-        // Self-registration for automatic command registration
         static bool registered;
     };
 }

@@ -7,14 +7,8 @@ namespace CMQ {
 
     GameServer::GameServer(int port, std::shared_ptr<MessageQueue<std::string>> queue, ProtocolType protocol, bool use_ssl)
         : NetworkServer(port, queue, protocol, use_ssl),
-          event_bus_(std::make_shared<EventBus>()) {
-        register_commands();
+          gameplay_system_(std::make_shared<GameplaySystem>()) {
         std::cout << "GameServer initialized." << std::endl;
-    }
-
-    void GameServer::register_commands() {
-        CommandFactory::get_instance().register_all_commands();
-        std::cout << "Commands registered.\n";
     }
 
     void GameServer::handle_player_message(int client_fd, const std::string &message) {
@@ -23,19 +17,8 @@ namespace CMQ {
         iss >> command_name;
         std::getline(iss, params);
 
-        auto command = CommandFactory::get_instance().create_command(command_name);
-        if (command) {
-            command->execute(this, client_fd, params);
-        } else {
-            send(client_fd, "Unknown command.\n", 17, 0);
-        }
-    }
-
-    void GameServer::broadcast_message(const std::string& message) {
-        std::lock_guard<std::mutex> lock(client_map_mutex_);
-        for (const auto& [fd, _] : player_map_) {
-            send(fd, message.c_str(), message.size(), 0);
-        }
+        // Automatically forward command to GameplaySystem (event-driven)
+        gameplay_system_->handle_event("player_" + command_name, std::to_string(client_fd) + " " + params);
     }
 
 }

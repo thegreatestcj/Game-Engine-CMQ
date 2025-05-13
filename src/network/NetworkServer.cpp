@@ -6,21 +6,22 @@ namespace CMQ {
 
 NetworkServer::NetworkServer(int port, std::shared_ptr<MessageQueue<std::string>> queue, ProtocolType protocol, bool use_ssl)
     : port_(port), protocol_(protocol), running_(false),
-      message_queue_(queue), use_ssl_(use_ssl),
-      ssl_ctx_(nullptr), dispatcher_(std::make_shared<Dispatcher>(4)) {
+      message_queue_(queue), use_ssl_(use_ssl), ssl_ctx_(nullptr) {
 #ifdef _WIN32
     WSAStartup(MAKEWORD(2, 2), &wsa_data_);
 #endif
     if (use_ssl_) initialize_ssl();
+    Dispatcher::get_instance().start(4); // Use Singleton Dispatcher
 }
 
 NetworkServer::~NetworkServer() {
     stop();
     cleanup_ssl();
+    Dispatcher::get_instance().stop(); // Singleton Dispatcher shutdown
 #ifdef _WIN32
     WSACleanup();
 #endif
-}
+    }
 
 void NetworkServer::start() {
     running_ = true;
