@@ -10,8 +10,8 @@ include(Helpers)
 
 # Global include directories
 include_directories(
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/external
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/external
 )
 
 # Add subdirectories
@@ -21,17 +21,29 @@ add_subdirectory(src/logger)
 add_subdirectory(src/config)
 add_subdirectory(src/web)
 add_subdirectory(src/network)
+add_subdirectory(src/tests)
+
+# Fetch Google Test
+include(FetchContent)
+FetchContent_Declare(
+        gtest
+        URL https://github.com/google/googletest/archive/refs/heads/main.zip
+)
+FetchContent_MakeAvailable(gtest)
 
 # Define the main executable
 add_executable(GameEngineCMQ main.cpp)
 
 # Link against module libraries
 target_link_libraries(GameEngineCMQ
-    CMQEngine
-    GameplayModule
-    Logger
-    Config
-    WebView
-    GameModule
-    Network
+        CMQEngine
+        GameplayModule
+        Logger
+        Config
+        WebView
+        Network
 )
+
+# Link Google Test to your test executable
+target_link_libraries(GameEngineCMQ GTest::gtest GTest::gtest_main)
+enable_testing()

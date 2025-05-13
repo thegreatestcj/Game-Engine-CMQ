@@ -2,6 +2,7 @@
 #ifndef CMQ_DISPATCHER_HPP
 #define CMQ_DISPATCHER_HPP
 
+#include "TaskQueue.hpp"
 #include <deque>
 #include <thread>
 #include <vector>

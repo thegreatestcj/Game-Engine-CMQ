@@ -1,6 +1,6 @@
-// include/gameplay/commands/MoveCommand.hpp
-#ifndef CMQ_MOVECOMMAND_HPP
-#define CMQ_MOVECOMMAND_HPP
+// include/gameplay/commands/AttackCommand.hpp
+#ifndef CMQ_ATTACKCOMMAND_HPP
+#define CMQ_ATTACKCOMMAND_HPP
 
 #include "Command.hpp"
 #include <string>
@@ -8,7 +8,7 @@
 namespace CMQ {
     class GameplaySystem; // Forward declaration
 
-    class MoveCommand : public Command {
+    class AttackCommand : public Command {
     public:
         void execute(GameplaySystem* system, int client_id, const std::string& params) override;
 
