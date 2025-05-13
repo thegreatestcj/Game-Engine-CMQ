@@ -66,5 +66,6 @@ namespace CMQ {
 
     // Explicit instantiation (required for template source file)
     template class MessageQueue<int>; // You can change T to any type used
+    template class MessageQueue<std::string>;
 }
 

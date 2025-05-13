@@ -2,30 +2,42 @@
 #ifndef CMQ_RATELIMITER_HPP
 #define CMQ_RATELIMITER_HPP
 
+#include <unordered_map>
+#include <list>
 #include <chrono>
 #include <mutex>
-#include <unordered_map>
+#include <thread>
 #include <string>
+#include <atomic>
 
 namespace CMQ {
 
     class RateLimiter {
     public:
-        // Constructor: max_requests = allowed requests, time_window = seconds
-        RateLimiter(int max_requests = 5, double time_window = 2.0);
+        RateLimiter(int max_requests, double time_window, size_t max_clients = 1000);
+        ~RateLimiter();
 
-        // Checks if the client is allowed to make a request
         bool allow_request(const std::string& client_id);
 
     private:
-        int max_requests_;
-        double time_window_; // Time window in seconds
+        void cleanup_expired_clients();
+        void cleanup_lru();
 
-        // Stores request count and last reset time for each client
-        std::unordered_map<std::string, std::pair<int, std::chrono::steady_clock::time_point>> request_records_;
+        int max_requests_;
+        double time_window_;
+        size_t max_clients_;
+
+        using LRUList = std::list<std::string>;
+        using ClientRecord = std::pair<int, std::chrono::steady_clock::time_point>;
+
+        std::unordered_map<std::string, std::pair<ClientRecord, LRUList::iterator>> request_records_;
+        LRUList lru_list_;
+
         std::mutex mutex_;
+        std::atomic<bool> running_;
+        std::thread cleanup_thread_;
     };
 
-}
+} // namespace CMQ
 
-#endif
+#endif // CMQ_RATELIMITER_HPP

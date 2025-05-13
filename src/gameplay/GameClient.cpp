@@ -12,7 +12,6 @@ namespace CMQ {
     }
 
     void GameClient::register_commands() {
-        CommandFactory::get_instance().register_all_commands();
         // Store commands in local registry for direct client-side usage
         command_registry_ = CommandFactory::get_instance().get_registered_commands();
         std::cout << "Commands registered.\n";

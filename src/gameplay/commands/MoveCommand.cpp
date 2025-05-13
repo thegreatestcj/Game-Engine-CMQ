@@ -1,7 +1,7 @@
 // src/gameplay/commands/MoveCommand.cpp
 #include "gameplay/commands/MoveCommand.hpp"
 #include "gameplay/commands/CommandFactory.hpp"
-#include "gameplay/GameServer.hpp"
+#include "gameplay/GameplaySystem.hpp"
 #include <iostream>
 #include <sstream>
 
@@ -13,12 +13,12 @@ namespace CMQ {
         return true;
     }();
 
-    void MoveCommand::execute(GameServer* server, int client_id, const std::string& params) {
-        if (server) {
+    void MoveCommand::execute(GameplaySystem* system, int client_id, const std::string& params) {
+        if (system) {
             std::istringstream iss(params);
             int x, y;
             iss >> x >> y;
-            server->broadcast_message("Player " + std::to_string(client_id) + " moves to: " + std::to_string(x) + ", " + std::to_string(y));
+            system->broadcast_message("Player " + std::to_string(client_id) + " moves to: " + std::to_string(x) + ", " + std::to_string(y));
         }
     }
 

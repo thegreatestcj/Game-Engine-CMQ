@@ -15,12 +15,12 @@ namespace CMQ {
             if (closed_) return;
 
             if (high_priority) {
-                queue_.push_front(std::move(task));  // 高优先级任务插入前端
+                queue_.push_front(std::move(task));
             } else {
-                queue_.push_back(std::move(task));   // 普通任务插入后端
+                queue_.push_back(std::move(task));
             }
         }
-        cv_.notify_one();  // 唤醒一个等待线程
+        cv_.notify_one();
     }
 
     bool TaskQueue::pop(Task& task) {
