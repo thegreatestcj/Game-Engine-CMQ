@@ -44,6 +44,10 @@ target_link_libraries(GameEngineCMQ
         Network
 )
 
-# Link Google Test to your test executable
-target_link_libraries(GameEngineCMQ GTest::gtest GTest::gtest_main)
+
+# Define the test executable
+add_executable(TestServerClient src/tests/TestServerClient.cpp)
+target_link_libraries(TestServerClient GTest::gtest GTest::gtest_main CMQEngine GameplayModule Network)
+
 enable_testing()
+add_test(NAME TestServerClient COMMAND TestServerClient)

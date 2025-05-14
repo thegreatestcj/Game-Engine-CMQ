@@ -4,6 +4,7 @@
 
 #include "engine/Dispatcher.hpp"
 #include "engine/MessageQueue.hpp"
+#include "network/ProtocolType.hpp"
 #include <memory>
 #include <thread>
 #include <unordered_map>
@@ -21,11 +22,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <fcntl.h>
 #endif
 
 namespace CMQ {
 
-    enum class ProtocolType { TCP, UDP };
 
     class NetworkServer {
     public:

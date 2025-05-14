@@ -3,6 +3,7 @@
 #define CMQ_NETWORK_CLIENT_HPP
 
 #include "engine/Dispatcher.hpp"
+#include "network/ProtocolType.hpp"
 #include <string>
 #include <memory>
 #include <atomic>
@@ -23,8 +24,6 @@
 #endif
 
 namespace CMQ {
-
-    enum class ProtocolType { TCP, UDP };
 
     class NetworkClient {
     public:

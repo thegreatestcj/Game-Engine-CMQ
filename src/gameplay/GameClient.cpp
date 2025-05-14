@@ -28,21 +28,25 @@ namespace CMQ {
     }
 
     void GameClient::receive_message_async() {
-        dispatcher_->dispatch([this]() {
+        std::cout << "[DEBUG] receive_message_async started." << std::endl;
+        while (connected_ && running_) {
             char buffer[1024];
-            while (connected_) {
-                int bytes = (use_ssl_ ? SSL_read(ssl_, buffer, sizeof(buffer))
-                                      : recv(client_fd_, buffer, sizeof(buffer), 0));
-                if (bytes > 0) {
-                    std::string message(buffer, bytes);
-                    std::cout << "Received: " << message << std::endl;
-                } else {
-                    std::cerr << "Disconnected from server.\n";
-                    reconnect();
-                    break;
-                }
+            int bytes = recv(client_fd_, buffer, sizeof(buffer), 0);
+            if (bytes > 0) {
+                std::string message(buffer, bytes);
+                std::cout << "[DEBUG] Client received: " << message << std::endl;
+            } else if (bytes == 0) {
+                std::cerr << "[DEBUG] Server closed connection.\n";
+                break;
+            } else {
+                std::cerr << "[DEBUG] recv() error: " << strerror(errno) << std::endl;
+                break;
             }
-        });
+        }
+        std::cout << "[DEBUG] receive_message_async exiting." << std::endl;
     }
+
+
+
 
 }
